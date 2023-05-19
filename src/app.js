@@ -3,6 +3,7 @@ require("dotenv").config();
 const db = require('./utils/database');
 const initModels = require('./models/initModels');
 const userRoutes = require('./routes/users.routes')
+const postRoutes = require('./routes/posts.routes');
 
 initModels();
 
@@ -22,7 +23,8 @@ app.get('/', (req, res) => {
 });
 
 
-app.use(userRoutes)
+app.use(userRoutes);
+app.use(postRoutes);
 
 app.listen(PORT, () => {
     console.log(`servidor escuchando en ${PORT} `);

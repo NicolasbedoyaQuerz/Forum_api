@@ -1,5 +1,6 @@
 const Users = require('../models/users.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const createUser = async(req, res) => {
     try {
@@ -57,9 +58,18 @@ const login = async (req, res) => {
         }
 
        
-        const {firstname, lastname, id, username, roleid } = user;
+        const {firstname, lastname, id, username, rolId } = user;
+        
+        const userData = {firstname, lastname, id, username, email, rolId };
 
-        res.json({firstname, lastname, id, username, email, roleid });
+        const token = jwt.sign(userData, "loktar", {
+            algorithm: 'HS512',
+            expiresIn: "30m"
+        });
+
+        userData.token = token;
+        
+        res.json(userData);
 
     } catch (error) {
         res.status(400).json(error);
